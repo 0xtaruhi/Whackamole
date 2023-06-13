@@ -1,6 +1,4 @@
-# copy all files in rtl/verilog to sim/verilog
-file(GLOB RTL_FILES ${CMAKE_SOURCE_DIR}/rtl/verilog)
-file(COPY ${RTL_FILES} DESTINATION ${CMAKE_SOURCE_DIR}/sim)
+file(GLOB_RECURSE VERILOG_FILES ${CMAKE_SOURCE_DIR}/rtl/verilog/*.v)
 
 # find Qt6
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
@@ -31,7 +29,7 @@ qt_add_executable(sim
 )
 
 # Verilator
-verilate(sim SOURCES ${CMAKE_SOURCE_DIR}/sim/verilog/Top.v)
+verilate(sim SOURCES ${VERILOG_FILES} TRACE)
 
 set_target_properties(sim PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER taruhi.whackmole.com

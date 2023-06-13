@@ -5,7 +5,10 @@
 #include <QObject>
 #include <QRgb>
 #include <QTimer>
-#include <qimage.h>
+
+#include "VTop.h"
+#include <verilated_vcd_c.h>
+#include <verilated.h>
 
 /// @brief The HWDut class is a hardware device under test. It is a wrapper
 /// of the verilator model. It is running in a separate thread.
@@ -14,7 +17,8 @@ class HWDut final : public QObject {
 
 public:
   HWDut(QObject *parent = nullptr);
-  ~HWDut() = default;
+  HWDut(bool trace_enabled, QObject *parent = nullptr);
+  ~HWDut();
 
 private slots:
   /// @brief Emit a signal to notify the main thread that a new frame is
@@ -40,6 +44,17 @@ private:
   QImage image1_;
   QImage image2_;
   QImage *cur_write_image_;
+  bool trace_enabled_ = false;
+
+  // Verilator related
+  VerilatedContext context_;
+  std::unique_ptr<VTop> top_;
+  std::unique_ptr<VerilatedVcdC> trace_;
+  int tick_count_ = 0;
+
+  auto initVerilator() -> void;
+
+  auto tick() -> void;
 };
 
 #endif // HW_DUT_H
