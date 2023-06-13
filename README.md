@@ -1,5 +1,10 @@
 # Whackamole
 
+---
+**THIS PROJECT IS STILL UNDER DEVELOPMENT**
+**PART OF THE DOCUMENTATION MAY BE INCOMPLETE OR OUTDATED**
+
+---
 ## Table of Contents
 
 - [Whackamole](#whackamole)
@@ -7,43 +12,60 @@
   - [About ](#about-)
   - [Getting Started ](#getting-started-)
     - [Prerequisites](#prerequisites)
-    - [Installing](#installing)
-  - [Usage ](#usage-)
+    - [Simulation](#simulation)
+    - [Validation](#validation)
 
-## About <a name = "about"></a>
+## About <a name="about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+The Whackamole project is a Whack-a-Mole game implemented using SpinalHDL for RTL (Register Transfer Level) development, Verilator for simulation, and Qt for visualization. This project serves as the final course project for ASIC2023.
 
-## Getting Started <a name = "getting_started"></a>
+## Getting Started <a name="getting-started"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+These instructions will guide you through setting up the project on your local machine for development and testing purposes. 
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
+Before you can use the software, you need to install the following dependencies:
 
-```
-Give examples
-```
+- SpinalHDL
+- Verilator
+- Qt6
 
-### Installing
+Please follow the installation instructions provided by the respective projects to install these dependencies on your system.
 
-A step by step series of examples that tell you how to get a development env running.
+### Simulation
 
-Say what the step will be
+To run the simulation, follow these steps:
 
-```
-Give the example
-```
+1. Clone the repository:
 
-And repeat
+   ```
+   git clone https://github.com/0xtaruhi/whackamole.git
+   ```
 
-```
-until finished
-```
+2. Change into the project directory:
 
-End with an example of getting some data out of the system or using it for a little demo.
+   ```
+   cd whackamole
+   ```
 
-## Usage <a name = "usage"></a>
+3. Build the project:
 
-Add notes about how to use the system.
+   ```
+   mkdir build
+   cmake -GNinja ..
+   ninja
+   ```
+
+4. Run the simulation:
+
+   ```
+   sim/sim
+   ```
+
+   This will start the Whack-a-Mole simulation.
+
+### Validation
+
+
+We will use Procise as the EDA (Electronic Design Automation) tool for FPGA development to generate the bitstream and download it onto the FPGA development board. Currently, this part is still under development.
