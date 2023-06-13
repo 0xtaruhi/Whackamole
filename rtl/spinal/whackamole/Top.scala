@@ -5,10 +5,22 @@ import spinal.lib._
 
 case class Top() extends Component {
   val io = new Bundle {
-    val led = out Bits(8 bits)    
+    val rgb   = Vec(out Bits (8 bits), 3)
+    val hSync = out Bool ()
+    val vSync = out Bool ()
   }
-  val ledReg = Reg(Bits(8 bits)) init(1)
-  
-  ledReg := ledReg.rotateLeft(1)
-  io.led := ledReg
+
+  val vgaDriver = drivers.VgaDriver(drivers.VgaConfig())
+  io.hSync := vgaDriver.io.hSync
+  io.vSync := vgaDriver.io.vSync
+
+  when (vgaDriver.io.inDispArea) {
+    io.rgb(0) := 0xFF
+    io.rgb(1) := 0x00
+    io.rgb(2) := 0x00
+  } otherwise {
+    io.rgb(0) := 0x00
+    io.rgb(1) := 0x00
+    io.rgb(2) := 0x00
+  }
 }
