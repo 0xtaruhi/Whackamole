@@ -3,7 +3,7 @@ package whackamole
 import spinal.core._
 import spinal.lib._
 
-case class Top() extends Component {
+case class Top(config: GameConfig = GameConfig()) extends Component {
   val io = new Bundle {
     val rgb   = Vec(out UInt (8 bits), 3)
     val hSync = out Bool ()
@@ -14,13 +14,13 @@ case class Top() extends Component {
   io.hSync := vgaDriver.io.hSync
   io.vSync := vgaDriver.io.vSync
 
+  val layer = Layer()
+  layer.io.hPos := vgaDriver.io.hPos.resized
+  layer.io.vPos := vgaDriver.io.vPos.resized
+
   when (vgaDriver.io.inDispArea) {
-    io.rgb(0) := vgaDriver.io.hPos.resized
-    io.rgb(1) := vgaDriver.io.vPos.resized
-    io.rgb(2) := (vgaDriver.io.hPos + vgaDriver.io.vPos).resized
+    io.rgb := layer.io.rgb
   } otherwise {
-    io.rgb(0) := 0x00
-    io.rgb(1) := 0x00
-    io.rgb(2) := 0x00
+    io.rgb.foreach(_ := 0)
   }
 }
