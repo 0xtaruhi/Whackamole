@@ -3,42 +3,25 @@
 #include "HWDut.h"
 
 HWDut::HWDut(QObject *parent) : QObject(parent) {
-  timer_.setInterval(10);
-  connect(&timer_, &QTimer::timeout, this, [this]() { onNextFrame(); });
+  image1_ = QImage(640, 480, QImage::Format_RGB888);
+  image2_ = QImage(640, 480, QImage::Format_RGB888);
+
+  timer_.setInterval(1000 / 60);
+  connect(&timer_, &QTimer::timeout, this, &HWDut::onEmitNewFrame);
   timer_.start();
+  cur_write_image_ = &image1_;
 }
 
-auto HWDut::onNextRow(int rows) -> void {
-  static QVector<QRgb> row(640);
-  static int y_pos = 0;
-
-  static uint8_t r_color = 0;
-
-  for (int i = 0; i < rows; ++i) {
-    for (int j = 0; j < 640; ++j) {
-      row[j] = qRgb(r_color, 0, 0);
-    }
-    emit receiveRowData(row);
-    y_pos++;
-    if (y_pos == 525) {
-      y_pos = 0;
-      emit newFrame();
-      r_color++;
+auto HWDut::onEmitNewFrame() -> void {
+  static int count = 0;
+  for (int i = 0; i < 640; ++i) {
+    for (int j = 0; j < 480; ++j) {
+      curWriteImage()->setPixel(
+          i, j,
+          qRgb((i + count) % 256, (j + count) % 256, (i + j + count) % 256));
     }
   }
-}
-
-auto HWDut::onNextFrame() -> void {
-  static QVector<QVector<QRgb>> frame(480, QVector<QRgb>(640));
-
-  static uint8_t r_color = 0;
-
-  for (int i = 0; i < 480; ++i) {
-    for (int j = 0; j < 640; ++j) {
-      frame[i][j] = qRgb(r_color, j, 5 * i);
-    }
-  }
-  emit receiveFrameData(frame);
-  emit newFrame();
-  r_color++;
+  emit newFrame(curWriteImage());
+  count++;
+  swapImages();
 }

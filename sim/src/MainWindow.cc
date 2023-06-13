@@ -25,7 +25,8 @@ auto MainWindow::initMembers() -> void {
   second_timer_->setInterval(1000);
   second_timer_->start();
 
-  connect(second_timer_, &QTimer::timeout, this, &MainWindow::onUpdateFrameRate);
+  connect(second_timer_, &QTimer::timeout, this,
+          &MainWindow::onUpdateFrameRate);
   onUpdateFrameRate();
 
   hw_dut_thread_ = new QThread(this);
@@ -33,9 +34,7 @@ auto MainWindow::initMembers() -> void {
 
   hw_dut_->moveToThread(hw_dut_thread_);
 
-  connect(hw_dut_, &HWDut::receiveFrameData, canvas_,
-          &Canvas::onReceiveFrameData);
-  connect(hw_dut_, &HWDut::newFrame, canvas_, &Canvas::onNewFrame);
+  connect(hw_dut_, &HWDut::newFrame, canvas_, &Canvas::onUpdateImage);
   connect(hw_dut_, &HWDut::newFrame, this, &MainWindow::onNewFrame);
 }
 
