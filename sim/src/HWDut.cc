@@ -11,7 +11,7 @@ HWDut::HWDut(bool trace_enabled, QObject *parent) : QObject(parent) {
 
   initVerilator();
 
-  timer_.setInterval(1000 / 60);
+  timer_.setInterval(1000 / 4);
   connect(&timer_, &QTimer::timeout, this, &HWDut::onEmitNewFrame);
   timer_.start();
   cur_write_image_ = &image1_;
