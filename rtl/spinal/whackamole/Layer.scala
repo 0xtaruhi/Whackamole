@@ -7,23 +7,28 @@ import scala.collection.mutable.ListBuffer
 import whackamole.game.components._
 
 case class Layer(config: GameConfig = GameConfig()) extends Component {
-  val c = config.graphicsConfig
-  val io         = new Bundle {
-    val hPos = in UInt (c.widthBits bits)
-    val vPos = in UInt (c.heightBits bits)
+  val c  = config.graphicsConfig
+  val io = new Bundle {
+    val hPos              = in UInt (c.widthBits bits)
+    val vPos              = in UInt (c.heightBits bits)
+    val molesGraphicsInfo = in(GraphicsInfo())
 
     val rgb = out Vec (UInt(8 bits), 3)
   }
 
-  val components = ListBuffer[Drawable]()
+  val components = ListBuffer[GraphicsInfo]()
 
   def registerComponents(newComponents: Drawable*) {
-    components ++= newComponents
+    components ++= newComponents.map(_.io.info)
 
     for (c <- newComponents) {
-      c.io.info.hPos := io.hPos
-      c.io.info.vPos := io.vPos
+      c.io.hPos := io.hPos
+      c.io.vPos := io.vPos
     }
+  }
+
+  def registerComponents(newComponents: GraphicsInfo) {
+    components += newComponents
   }
 
   val gameAreaBackground = GameAreaBackground(config)
@@ -34,18 +39,15 @@ case class Layer(config: GameConfig = GameConfig()) extends Component {
   scoreAreaBackground.io.startHPos := config.gameAreaWidth
   scoreAreaBackground.io.startVPos := 0
 
-  val moles = Moles(config)
-  moles.io.startHPos := 0
-  moles.io.startVPos := 0
-  
   // Register components, so that they can be drawn.
-  registerComponents(gameAreaBackground, scoreAreaBackground, moles)
+  registerComponents(gameAreaBackground, scoreAreaBackground)
+  registerComponents(io.molesGraphicsInfo)
 
   io.rgb.foreach(_ := 0)
 
   for (c <- components) {
-    when (c.io.info.visible) {
-      io.rgb := c.io.info.rgb
+    when(c.visible) {
+      io.rgb := c.rgb
     }
   }
 }

@@ -1,7 +1,10 @@
+#include <QGraphicsEffect>
 #include <QLayout>
+#include <qgraphicseffect.h>
 #include <qtimer.h>
 
 #include "Canvas.h"
+#include "HWDut.h"
 #include "Keypad.h"
 #include "MainWindow.h"
 
@@ -34,8 +37,16 @@ auto MainWindow::initMembers() -> void {
 
   hw_dut_->moveToThread(hw_dut_thread_);
 
+  QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect(this);
+  effect->setBlurRadius(10);
+  effect->setOffset(0);
+  effect->setColor(Qt::black);
+  canvas_->setGraphicsEffect(effect);
+
   connect(hw_dut_, &HWDut::newFrame, canvas_, &Canvas::onUpdateImage);
   connect(hw_dut_, &HWDut::newFrame, this, &MainWindow::onNewFrame);
+  connect(keypad_, &Keypad::clicked, hw_dut_, &HWDut::onKeyPressed);
+  connect(keypad_, &Keypad::released, hw_dut_, &HWDut::onKeyReleased);
 }
 
 auto MainWindow::initLayout() -> void {

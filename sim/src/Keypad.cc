@@ -1,7 +1,7 @@
+#include <QDebug>
 #include <QEvent>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QDebug>
 
 #include "Keypad.h"
 
@@ -30,6 +30,7 @@ void Key::mouseReleaseEvent(QMouseEvent *event) {
   if (event->button() == Qt::LeftButton) {
     is_pressed_ = false;
     update();
+    emit released();
   }
 }
 
@@ -48,6 +49,9 @@ Keypad::Keypad(int row_num, int col_num, QWidget *parent)
 
       connect(key, &Key::clicked, this,
               [this, key] { emit clicked(key_positions_.value(key)); });
+
+      connect(key, &Key::released, this,
+              [this, key] { emit released(key_positions_.value(key)); });
     }
   }
 }

@@ -3,32 +3,24 @@ package whackamole.graphics
 import spinal.core._
 import spinal.lib._
 
-case class GraphicsInfo(config: GraphicsConfig)
-    extends Bundle
-    with IMasterSlave {
-  val hPos = UInt(config.widthBits bits)
-  val vPos = UInt(config.heightBits bits)
-
+case class GraphicsInfo() extends Bundle {
   val rgb     = Vec(UInt(8 bits), 3)
   val visible = Bool()
-
-  override def asMaster(): Unit = {
-    in(hPos, vPos)
-    out(rgb, visible)
-  }
 }
 
 abstract class Drawable(config: GraphicsConfig) extends Component {
   class DrawableInterface extends Bundle {
     val startHPos = in UInt (config.widthBits bits)
     val startVPos = in UInt (config.heightBits bits)
-    val info      = master(GraphicsInfo(config))
+    val hPos      = in UInt (config.widthBits bits)
+    val vPos      = in UInt (config.heightBits bits)
+    val info      = out(GraphicsInfo())
   }
 
   val io = new DrawableInterface
 
-  val hPos      = io.info.hPos
-  val vPos      = io.info.vPos
+  val hPos      = io.hPos
+  val vPos      = io.vPos
   val startHPos = io.startHPos
   val startVPos = io.startVPos
 

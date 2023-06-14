@@ -11,6 +11,7 @@ public:
 
 signals:
   void clicked();
+  void released();
 
 protected:
   void paintEvent(QPaintEvent *event) override;
@@ -30,6 +31,7 @@ public:
 
 signals:
   void clicked(QPair<int, int> position);
+  void released(QPair<int, int> position);
 
 private:
   QSize keypad_size_;

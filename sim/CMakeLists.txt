@@ -1,4 +1,4 @@
-file(GLOB_RECURSE VERILOG_FILES ${CMAKE_SOURCE_DIR}/rtl/verilog/*.v)
+file(GLOB_RECURSE VERILOG_FILES ${CMAKE_SOURCE_DIR}/rtl/verilog/GameTop.v)
 
 # find Qt6
 find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)

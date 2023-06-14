@@ -1,1 +1,3 @@
 verilog/Top.v
+verilog/BoardTop.v
+verilog/GameTop.v

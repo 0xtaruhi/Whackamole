@@ -6,7 +6,7 @@
 #include <QRgb>
 #include <QTimer>
 
-#include "VTop.h"
+#include "VGameTop.h"
 #include <verilated_vcd_c.h>
 #include <verilated.h>
 
@@ -24,6 +24,10 @@ private slots:
   /// @brief Emit a signal to notify the main thread that a new frame is
   /// available. This slot is connected to the timer's timeout signal.
   auto onEmitNewFrame() -> void;
+
+public slots:
+  auto onKeyPressed(QPair<int, int> position) -> void;
+  auto onKeyReleased(QPair<int, int> position) -> void;
 
 signals:
   /// @brief Notify the main thread that a new frame is available.
@@ -46,9 +50,12 @@ private:
   QImage *cur_write_image_;
   bool trace_enabled_ = false;
 
+  enum class KeyState { Pressed, Released };
+  QVector<QVector<KeyState>> key_states_;
+
   // Verilator related
   VerilatedContext context_;
-  std::unique_ptr<VTop> top_;
+  std::unique_ptr<VGameTop> top_;
   std::unique_ptr<VerilatedVcdC> trace_;
   int tick_count_ = 0;
 
