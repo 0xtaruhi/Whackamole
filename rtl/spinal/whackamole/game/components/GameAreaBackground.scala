@@ -20,16 +20,17 @@ case class GameAreaBackground(config: GameConfig = GameConfig())
     }
 
     val result = Vec(UInt(8 bits), 3)
+    val gradient = ((hPos + vPos) |>> 3).resize(8 bits)
 
     when(inBorder()) {
-      result(0) := 188
-      result(1) := 226
-      result(2) := 232
+      result(0) := 253 - gradient
+      result(1) := 222 - gradient
+      result(2) := 165 - gradient
     } otherwise {
       // Border color
-      result(0) := 68
-      result(1) := 97
-      result(2) := 123
+      result(0) := 188
+      result(1) := 118
+      result(2) := 60
     }
     result
   }

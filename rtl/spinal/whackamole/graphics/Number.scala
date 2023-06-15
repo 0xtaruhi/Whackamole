@@ -16,6 +16,7 @@ case class Number64x64(
     val number  = in UInt (4 bits)
     val reqAddr = out UInt (18 bits)
     val reqData = in UInt (8 bits)
+    val inArea  = out Bool()
   }
 
   def draw(): Vec[UInt] = {
@@ -29,13 +30,14 @@ case class Number64x64(
   val hOffset = (hPos - startHPos)(5 downto 3)
   val vOffset = (vPos - startVPos)(5 downto 3)
 
-  extraIo.reqAddr := U(numberAddrPrefix, 4 bits) @@ extraIo.number.resize(11 bits) @@ vOffset
+  extraIo.reqAddr := U(numberAddrPrefix, 4 bits) @@ extraIo.number.resize(11 bits) @@ hOffset
 
   override def visible(): Bool = {
     val inArea = super.visible()
-    inArea && (extraIo.reqData >> hOffset)(0)
+    inArea && (extraIo.reqData >> vOffset)(0)
   }
 
   io.info.rgb     := draw()
   io.info.visible := visible()
+  extraIo.inArea  := super.visible()
 }

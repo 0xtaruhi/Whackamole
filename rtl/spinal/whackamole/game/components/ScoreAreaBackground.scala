@@ -21,15 +21,17 @@ case class ScoreAreaBackground(config: GameConfig = GameConfig())
 
     val result = Vec(UInt(8 bits), 3)
 
+    val gradient = (vPos |>> 3).resize(8 bits)
+
     when(inBorder()) {
-      result(0) := 168
-      result(1) := 201
-      result(2) := 127
+      result(0) := 160 - gradient
+      result(1) := 216 - gradient
+      result(2) := 239 - gradient
     } otherwise {
       // Border color
       result(0) := 0
       result(1) := 123
-      result(2) := 67
+      result(2) := 187
     }
     result
   }

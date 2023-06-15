@@ -15,6 +15,7 @@ case class RoundDisp(config: GameConfig = GameConfig())
     val round   = in UInt (4 bits)
     val reqAddr = out UInt (18 bits)
     val reqData = in UInt (8 bits)
+    val inArea  = out Bool ()
   }
 
   val number = Number64x64(
@@ -39,4 +40,5 @@ case class RoundDisp(config: GameConfig = GameConfig())
 
   io.info.rgb     := draw()
   io.info.visible := visible()
+  extraIo.inArea  := number.extraIo.inArea
 }

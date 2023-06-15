@@ -37,7 +37,7 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
 
   // Memory related
   val memAddr = UInt(18 bits)
-  when (roundDisp.io.info.visible) {
+  when (roundDisp.extraIo.inArea) {
     memAddr := roundDisp.extraIo.reqAddr
   } elsewhen (moles.extraIo.inArea) {
     memAddr := moles.extraIo.memAddr
@@ -64,7 +64,7 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
   moles.extraIo.memData         := io.memData(15 downto 0)
 
   // Round Display
-  roundDisp.extraIo.round   := gameController.io.round.resized
+  roundDisp.extraIo.round   := (gameController.io.round + 1).resized
   roundDisp.extraIo.reqData := io.memData(7 downto 0)
   roundDisp.io.startHPos    := 500
   roundDisp.io.startVPos    := 150
