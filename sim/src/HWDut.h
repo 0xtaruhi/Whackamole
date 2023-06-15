@@ -7,8 +7,10 @@
 #include <QTimer>
 
 #include "VGameTop.h"
-#include <verilated_vcd_c.h>
 #include <verilated.h>
+#include <verilated_vcd_c.h>
+
+#include "Memory.h"
 
 /// @brief The HWDut class is a hardware device under test. It is a wrapper
 /// of the verilator model. It is running in a separate thread.
@@ -60,8 +62,15 @@ private:
   int tick_count_ = 0;
 
   auto initVerilator() -> void;
-
   auto tick() -> void;
+
+  // Peripherals
+  Memory *numbers_mem_;
+  Memory *mole_hide_mem_;
+  Memory *mole_show_mem_;
+
+  auto initMemories() -> void;
+  auto readMemory(int32_t addr) -> int32_t;
 };
 
 #endif // HW_DUT_H

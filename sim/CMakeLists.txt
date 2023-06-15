@@ -6,6 +6,12 @@ find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
 # find verilator
 find_package(verilator HINTS $ENV{VERILATOR_ROOT})
 
+# config file
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/config.h
+)
+
 # Qt
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -21,6 +27,10 @@ set(SIM_SRCS
     src/Keypad.cc
     src/HWDut.h
     src/HWDut.cc
+    src/CoeReader.h
+    src/CoeReader.cc
+    src/Memory.h
+    src/Memory.cc
 )
 
 qt_add_executable(sim

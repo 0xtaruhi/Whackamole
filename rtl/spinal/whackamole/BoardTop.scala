@@ -21,4 +21,5 @@ case class BoardTop(config: GameConfig = GameConfig()) extends Component {
   io.rgb           := game.io.rgb
   game.io.keyPress := keypadDriver.io.pressed
   game.io.keyIndex := keypadDriver.io.keyIndex
+  game.io.memData  := 0
 }

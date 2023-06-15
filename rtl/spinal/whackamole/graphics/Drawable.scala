@@ -33,3 +33,4 @@ abstract class Drawable(config: GraphicsConfig) extends Component {
     (vPos >= io.startVPos) && (vPos < (io.startVPos + vSize))
   }
 }
+

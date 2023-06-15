@@ -1,0 +1,91 @@
+memory_initialization_radix=16;
+memory_initialization_vector=
+7E, // Address 0: Digit 0
+FF, // Address 1: Digit 0
+81, // Address 2: Digit 0
+A5, // Address 3: Digit 0
+81, // Address 4: Digit 0
+81, // Address 5: Digit 0
+FF, // Address 6: Digit 0
+7E, // Address 7: Digit 0
+
+00, // Address 8: Digit 1
+82, // Address 9: Digit 1
+FF, // Address 10: Digit 1
+FF, // Address 11: Digit 1
+80, // Address 12: Digit 1
+80, // Address 13: Digit 1
+80, // Address 14: Digit 1
+80, // Address 15: Digit 1
+
+C2, // Address 16: Digit 2
+E3, // Address 17: Digit 2
+B1, // Address 18: Digit 2
+99, // Address 19: Digit 2
+8F, // Address 20: Digit 2
+87, // Address 21: Digit 2
+83, // Address 22: Digit 2
+81, // Address 23: Digit 2
+
+42, // Address 24: Digit 3
+C3, // Address 25: Digit 3
+81, // Address 26: Digit 3
+81, // Address 27: Digit 3
+89, // Address 28: Digit 3
+89, // Address 29: Digit 3
+FF, // Address 30: Digit 3
+76, // Address 31: Digit 3
+
+18, // Address 32: Digit 4
+1C, // Address 33: Digit 4
+16, // Address 34: Digit 4
+13, // Address 35: Digit 4
+11, // Address 36: Digit 4
+FF, // Address 37: Digit 4
+FF, // Address 38: Digit 4
+10, // Address 39: Digit 4
+
+4F, // Address 40: Digit 5
+CF, // Address 41: Digit 5
+89, // Address 42: Digit 5
+89, // Address 43: Digit 5
+89, // Address 44: Digit 5
+89, // Address 45: Digit 5
+F9, // Address 46: Digit 5
+71, // Address 47: Digit 5
+
+7E, // Address 48: Digit 6
+FF, // Address 49: Digit 6
+89, // Address 50: Digit 6
+89, // Address 51: Digit 6
+89, // Address 52: Digit 6
+89, // Address 53: Digit 6
+FB, // Address 54: Digit 6
+72, // Address 55: Digit 6
+
+01, // Address 56: Digit 7
+01, // Address 57: Digit 7
+F1, // Address 58: Digit 7
+F9, // Address 59: Digit 7
+0D, // Address 60: Digit 7
+07, // Address 61: Digit 7
+03, // Address 62: Digit 7
+01, // Address 63: Digit 7
+
+76, // Address 64: Digit 8
+FF, // Address 65: Digit 8
+89, // Address 66: Digit 8
+89, // Address 67: Digit 8
+89, // Address 68: Digit 8
+89, // Address 69: Digit 8
+FF, // Address 70: Digit 8
+76, // Address 71: Digit 8
+
+4E, // Address 72: Digit 9
+DF, // Address 73: Digit 9
+91, // Address 74: Digit 9
+91, // Address 75: Digit 9
+91, // Address 76: Digit 9
+91, // Address 77: Digit 9
+91, // Address 78: Digit 9
+FF; // Address 79: Digit 9

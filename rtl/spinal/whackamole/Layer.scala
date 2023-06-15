@@ -12,23 +12,23 @@ case class Layer(config: GameConfig = GameConfig()) extends Component {
     val hPos              = in UInt (c.widthBits bits)
     val vPos              = in UInt (c.heightBits bits)
     val molesGraphicsInfo = in(GraphicsInfo())
+    val roundGraphicsInfo = in(GraphicsInfo())
 
     val rgb = out Vec (UInt(8 bits), 3)
   }
 
   val components = ListBuffer[GraphicsInfo]()
 
-  def registerComponents(newComponents: Drawable*) {
-    components ++= newComponents.map(_.io.info)
-
-    for (c <- newComponents) {
-      c.io.hPos := io.hPos
-      c.io.vPos := io.vPos
+  def registerComponents(newComponents: List[_]) {
+    newComponents.foreach {
+      case c: Drawable     => {
+        components += c.io.info
+        c.io.hPos := io.hPos
+        c.io.vPos := io.vPos
+      }
+      case c: GraphicsInfo => components += c
+      case _               =>
     }
-  }
-
-  def registerComponents(newComponents: GraphicsInfo) {
-    components += newComponents
   }
 
   val gameAreaBackground = GameAreaBackground(config)
@@ -40,8 +40,14 @@ case class Layer(config: GameConfig = GameConfig()) extends Component {
   scoreAreaBackground.io.startVPos := 0
 
   // Register components, so that they can be drawn.
-  registerComponents(gameAreaBackground, scoreAreaBackground)
-  registerComponents(io.molesGraphicsInfo)
+  registerComponents(
+    List(
+      gameAreaBackground,
+      scoreAreaBackground,
+      io.molesGraphicsInfo,
+      io.roundGraphicsInfo
+    )
+  )
 
   io.rgb.foreach(_ := 0)
 

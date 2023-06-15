@@ -25,7 +25,7 @@ fn write_coe(img: &DynamicImage, coe_path: &str) -> Result<(), Box<dyn std::erro
         }
     }
 
-    let coe = Coe::new(coe_path, width, height, data);
+    let coe = Coe::new(coe_path, 16, height * width, data);
     coe.save()?;
     Ok(())
 }

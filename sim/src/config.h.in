@@ -1,0 +1,6 @@
+#ifndef CONFIG_H_IN
+#define CONFIG_H_IN
+
+#define RES_DIR "@CMAKE_SOURCE_DIR@/res"
+
+#endif // CONFIG_H_IN

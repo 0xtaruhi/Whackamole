@@ -1,6 +1,13 @@
 #include <QDebug>
+#include <cstdint>
+#include <exception>
+#include <qsize.h>
+#include <qtypes.h>
 
+#include "CoeReader.h"
 #include "HWDut.h"
+#include "Memory.h"
+#include "config.h"
 
 HWDut::HWDut(QObject *parent) : HWDut(false, parent) {}
 
@@ -13,6 +20,7 @@ HWDut::HWDut(bool trace_enabled, QObject *parent) : QObject(parent) {
       QVector<QVector<KeyState>>(4, QVector<KeyState>(4, KeyState::Released));
 
   initVerilator();
+  initMemories();
 
   timer_.setInterval(1000 / 5);
   connect(&timer_, &QTimer::timeout, this, &HWDut::onEmitNewFrame);
@@ -46,12 +54,56 @@ auto HWDut::initVerilator() -> void {
   tick();
 }
 
+auto HWDut::initMemories() -> void {
+  auto number_coe_reader_ = CoeReader();
+  auto mole_hide_coe_reader_ = CoeReader();
+  auto mole_show_coe_reader = CoeReader();
+
+  try {
+    number_coe_reader_.open(RES_DIR "/coe/numbers.coe");
+    mole_hide_coe_reader_.open(RES_DIR "/coe/mole-hide.coe");
+    mole_show_coe_reader.open(RES_DIR "/coe/mole-show.coe");
+  } catch (std::exception &e) {
+    qDebug() << e.what();
+    exit(1);
+  }
+
+  numbers_mem_ = new Memory(std::move(number_coe_reader_), this);
+  mole_hide_mem_ = new Memory(std::move(mole_hide_coe_reader_), this);
+  mole_show_mem_ = new Memory(std::move(mole_show_coe_reader), this);
+}
+
+auto HWDut::readMemory(int32_t addr) -> int32_t {
+  auto addr_tag = (addr >> 14) & 0xf;
+
+  auto memAddrResize = [](int32_t addr, int width) -> int32_t {
+    return addr & ((1 << width) - 1);
+  };
+
+  if (addr_tag == 0x00) {
+    return numbers_mem_->read(memAddrResize(addr, numbers_mem_->addrWidth()));
+  } else if (addr_tag == 0x01) {
+    return mole_hide_mem_->read(
+        memAddrResize(addr, mole_hide_mem_->addrWidth()));
+  } else if (addr_tag == 0x02) {
+    return mole_show_mem_->read(
+        memAddrResize(addr, mole_show_mem_->addrWidth()));
+  } else {
+    qDebug() << "Invalid memory access: " << addr;
+    qDebug() << "Tag: " << addr_tag;
+    return 0;
+  }
+}
+
 auto HWDut::onEmitNewFrame() -> void {
   int h_counter = 0;
   int v_counter = 0;
 
   while (!(h_counter == 0 && v_counter == 525)) {
+    auto mem_addr = top_->io_memAddr;
     tick();
+    top_->io_memData = readMemory(mem_addr);
+
     if (h_counter < 640 && v_counter < 480) [[likely]] {
       curWriteImage()->setPixel(
           h_counter, v_counter,
