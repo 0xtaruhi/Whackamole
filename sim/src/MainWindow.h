@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QThread>
 #include <QLabel>
+#include <QPushButton>
+#include <qpushbutton.h>
 
 #include "Canvas.h"
 #include "HWDut.h"
@@ -24,6 +26,8 @@ private:
   Canvas *canvas_;
   Keypad *keypad_;
   HWDut *hw_dut_;
+  QPushButton* reset_button_;
+  QPushButton* start_button_;
 
   QLabel* frame_rate_label_;
   QTimer* second_timer_;

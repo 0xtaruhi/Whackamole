@@ -14,6 +14,7 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
     val keyIndex = in UInt (4 bits)
     val memAddr  = out UInt (18 bits)
     val memData  = in UInt (16 bits)
+    val start    = in Bool ()
   }
 
   val updateCounter = CounterFreeRun(
@@ -51,7 +52,7 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
   io.vSync := vgaDriver.io.vSync
 
   // Game Controller
-  gameController.io.start    := True
+  gameController.io.start    := io.start
   gameController.io.updateEn := updateEn
 
   // Moles

@@ -46,6 +46,7 @@ auto HWDut::initVerilator() -> void {
     trace_->open((std::string(top_->name()) + ".vcd").c_str());
   }
 
+  top_->io_start = 0;
   top_->resetn = 0;
   for (int i = 0; i < 10; i++) {
     tick();
@@ -131,6 +132,20 @@ auto HWDut::onKeyPressed(QPair<int, int> position) -> void {
 auto HWDut::onKeyReleased(QPair<int, int> position) -> void {
   key_states_[position.first][position.second] = KeyState::Released;
   top_->io_keyPress = false;
+}
+
+auto HWDut::onStart() -> void {
+  top_->io_start = 1;
+}
+
+auto HWDut::onReset() -> void {
+  top_->io_start = 0;
+  top_->resetn = 0;
+  for (int i = 0; i < 10; i++) {
+    tick();
+  }
+  top_->resetn = 1;
+  tick();
 }
 
 auto HWDut::tick() -> void {

@@ -1,6 +1,7 @@
 #include <QGraphicsEffect>
 #include <QLayout>
 #include <qgraphicseffect.h>
+#include <qpushbutton.h>
 #include <qtimer.h>
 
 #include "Canvas.h"
@@ -22,6 +23,9 @@ auto MainWindow::initMembers() -> void {
   canvas_ = new Canvas(640, 480, this);
   keypad_ = new Keypad(4, 4, this);
   hw_dut_ = new HWDut();
+  reset_button_ = new QPushButton("Reset", this);
+  start_button_ = new QPushButton("Start", this);
+
   frame_rate_label_ = new QLabel(this);
 
   second_timer_ = new QTimer(this);
@@ -47,6 +51,8 @@ auto MainWindow::initMembers() -> void {
   connect(hw_dut_, &HWDut::newFrame, this, &MainWindow::onNewFrame);
   connect(keypad_, &Keypad::clicked, hw_dut_, &HWDut::onKeyPressed);
   connect(keypad_, &Keypad::released, hw_dut_, &HWDut::onKeyReleased);
+  connect(reset_button_, &QPushButton::clicked, hw_dut_, &HWDut::onReset);
+  connect(start_button_, &QPushButton::clicked, hw_dut_, &HWDut::onStart);
 }
 
 auto MainWindow::initLayout() -> void {
@@ -54,6 +60,14 @@ auto MainWindow::initLayout() -> void {
   auto *layout = new QVBoxLayout(centralWidget);
   layout->addWidget(canvas_);
   layout->addWidget(keypad_);
+
+  // Add buttons
+  auto *buttons_layout = new QHBoxLayout();
+  buttons_layout->addWidget(reset_button_);
+  buttons_layout->addWidget(start_button_);
+  layout->addLayout(buttons_layout);
+
+  // Add frame rate label
   layout->addWidget(frame_rate_label_);
 
   layout->setAlignment(keypad_, Qt::AlignHCenter);

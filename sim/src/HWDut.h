@@ -30,6 +30,8 @@ private slots:
 public slots:
   auto onKeyPressed(QPair<int, int> position) -> void;
   auto onKeyReleased(QPair<int, int> position) -> void;
+  auto onStart() -> void;
+  auto onReset() -> void;
 
 signals:
   /// @brief Notify the main thread that a new frame is available.
