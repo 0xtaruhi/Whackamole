@@ -5,18 +5,18 @@ import spinal.lib._
 
 import whackamole.GameConstants._
 
-case class Number64x64(
+case class Number64x32(
     color: (Int, Int, Int) = (0, 0, 0),
     config: GraphicsConfig
 ) extends Drawable(config) {
-  def hSize: Int = 64
+  def hSize: Int = 32
   def vSize: Int = 64
 
   val extraIo = new Bundle {
     val number  = in UInt (4 bits)
     val reqAddr = out UInt (18 bits)
-    val reqData = in UInt (8 bits)
-    val inArea  = out Bool()
+    val reqData = in UInt (16 bits)
+    val inArea  = out Bool ()
   }
 
   def draw(): Vec[UInt] = {
@@ -27,14 +27,16 @@ case class Number64x64(
     result
   }
 
-  val hOffset = (hPos - startHPos)(5 downto 3)
-  val vOffset = (vPos - startVPos)(5 downto 3)
+  val hOffset = (hPos - startHPos)(4 downto 1)
+  val vOffset = (vPos - startVPos)(5 downto 1)
 
-  extraIo.reqAddr := U(numberAddrPrefix, 4 bits) @@ extraIo.number.resize(11 bits) @@ hOffset
+  extraIo.reqAddr := U(numberAddrPrefix, 4 bits) @@
+    extraIo.number.resize(9 bits) @@
+    vOffset
 
   override def visible(): Bool = {
     val inArea = super.visible()
-    inArea && (extraIo.reqData >> vOffset)(0)
+    inArea && extraIo.reqData(15 - hOffset)
   }
 
   io.info.rgb     := draw()

@@ -14,31 +14,63 @@ case class RoundDisp(config: GameConfig = GameConfig())
   val extraIo = new Bundle {
     val round   = in UInt (4 bits)
     val reqAddr = out UInt (18 bits)
-    val reqData = in UInt (8 bits)
+    val reqData = in UInt (16 bits)
     val inArea  = out Bool ()
   }
 
-  val number = Number64x64(
-    color = (0, 0, 0),
+  val curRoundNumber = Number64x32(
+    color = (15, 35, 80),
     config = config.graphicsConfig
   )
-  number.extraIo.number  := extraIo.round
-  number.extraIo.reqData := extraIo.reqData
-  number.io.hPos         := io.hPos
-  number.io.vPos         := io.vPos
-  number.io.startHPos    := io.startHPos
-  number.io.startVPos    := io.startVPos
-  extraIo.reqAddr        := number.extraIo.reqAddr
+  curRoundNumber.extraIo.number  := extraIo.round
+  curRoundNumber.extraIo.reqData := extraIo.reqData
+  curRoundNumber.io.hPos         := io.hPos
+  curRoundNumber.io.vPos         := io.vPos
+  curRoundNumber.io.startHPos    := io.startHPos
+  curRoundNumber.io.startVPos    := io.startVPos
 
-  def draw(): Vec[UInt] = {
-    number.io.info.rgb
+  val slash = Number64x32(
+    color = (15, 35, 80),
+    config = config.graphicsConfig
+  )
+  slash.extraIo.number  := 0xa
+  slash.extraIo.reqData := extraIo.reqData
+  slash.io.hPos         := io.hPos
+  slash.io.vPos         := io.vPos
+  slash.io.startHPos    := io.startHPos + 40
+  slash.io.startVPos    := io.startVPos
+
+  val totalRoundNumber = Number64x32(
+    color = (15, 35, 80),
+    config = config.graphicsConfig
+  )
+  totalRoundNumber.extraIo.number  := config.rounds.size
+  totalRoundNumber.extraIo.reqData := extraIo.reqData
+  totalRoundNumber.io.hPos         := io.hPos
+  totalRoundNumber.io.vPos         := io.vPos
+  totalRoundNumber.io.startHPos    := io.startHPos + 73
+  totalRoundNumber.io.startVPos    := io.startVPos
+
+  val rgb = Vec(UInt(8 bits), 3)
+
+  when(curRoundNumber.extraIo.inArea) {
+    extraIo.reqAddr := curRoundNumber.extraIo.reqAddr
+    rgb             := curRoundNumber.io.info.rgb
+  } elsewhen (slash.extraIo.inArea) {
+    extraIo.reqAddr := slash.extraIo.reqAddr
+    rgb             := slash.io.info.rgb
+  } otherwise {
+    extraIo.reqAddr := totalRoundNumber.extraIo.reqAddr
+    rgb             := totalRoundNumber.io.info.rgb
   }
 
+  def draw(): Vec[UInt] = rgb
+
   override def visible(): Bool = {
-    number.io.info.visible
+    curRoundNumber.io.info.visible || slash.io.info.visible || totalRoundNumber.io.info.visible
   }
 
   io.info.rgb     := draw()
   io.info.visible := visible()
-  extraIo.inArea  := number.extraIo.inArea
+  extraIo.inArea := curRoundNumber.extraIo.inArea || slash.extraIo.inArea || totalRoundNumber.extraIo.inArea
 }

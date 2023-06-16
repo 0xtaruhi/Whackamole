@@ -65,9 +65,9 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
   moles.extraIo.memData         := io.memData(15 downto 0)
 
   // Round Display
-  roundDisp.extraIo.round   := (gameController.io.round + 1).resized
-  roundDisp.extraIo.reqData := io.memData(7 downto 0)
-  roundDisp.io.startHPos    := 500
+  roundDisp.extraIo.round   := gameController.io.round.resized
+  roundDisp.extraIo.reqData := io.memData
+  roundDisp.io.startHPos    := 510
   roundDisp.io.startVPos    := 150
 
   braodcastVHPos(moles, roundDisp)

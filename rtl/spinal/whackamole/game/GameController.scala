@@ -141,11 +141,13 @@ case class GameController(config: GameConfig = GameConfig()) extends Component {
     }
 
     val inRoundState: State = new StateFsm(fsm = roundInternalFsm) {
+      onEntry {
+        roundNum := roundNum + 1
+      }
       whenCompleted {
-        when(roundNum === config.rounds.size - 1) {
+        when(roundNum === config.rounds.size) {
           goto(gameOverState)
         } otherwise {
-          roundNum := roundNum + 1
           goto(preRoundState)
         }
       }
