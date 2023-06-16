@@ -16,16 +16,16 @@ case class RoundInfo(
 
 case class GameConfig(
     val frequency: HertzNumber = 2 MHz,
-    val updateFrequency: HertzNumber = 100 Hz,
+    val updateFrequency: HertzNumber = 1000 Hz,
     val graphicsConfig: GraphicsConfig = GraphicsConfig(),
     val gameAreaWidth: Int = 480,
     val moleHalfGap: Int = 10,
     val gameAreaBorderThickness: Int = 10,
     val scoreAreaBorderThickness: Int = 10,
     val rounds: Seq[RoundInfo] = Seq(
-      RoundInfo(5, 1, 0.8 sec, 1 sec),
-      RoundInfo(5, 3, 0.5 sec, 1 sec),
-      RoundInfo(10, 7, 0.3 sec, 1 sec)
+      RoundInfo(5, 1, 5 sec, 1 sec),
+      RoundInfo(5, 3, 5 sec, 1 sec),
+      RoundInfo(10, 7, 5 sec, 1 sec)
     ),
     val roundGapTime: TimeNumber = 3 sec,
     val scoreDigits: Int = 2

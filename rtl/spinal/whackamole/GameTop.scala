@@ -4,6 +4,7 @@ import spinal.core._
 import spinal.lib._
 import whackamole.game.GameController
 import whackamole.graphics.Drawable
+import whackamole.game.ScoreBoard
 
 case class GameTop(config: GameConfig = GameConfig()) extends Component {
   val io = new Bundle {
@@ -25,8 +26,10 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
 
   val vgaDriver      = drivers.VgaDriver(drivers.VgaConfig())
   val gameController = GameController(config)
+  val scoreBoard     = ScoreBoard(config)
   val moles          = game.components.Moles(config)
   val roundDisp      = game.components.RoundDisp(config)
+  val scoreDisp      = game.components.ScoreDisp(config)
   val layer          = Layer()
 
   def braodcastVHPos(x: Drawable*) {
@@ -38,8 +41,10 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
 
   // Memory related
   val memAddr = UInt(18 bits)
-  when (roundDisp.extraIo.inArea) {
+  when(roundDisp.extraIo.inArea) {
     memAddr := roundDisp.extraIo.reqAddr
+  } elsewhen (scoreDisp.extraIo.inArea) {
+    memAddr := scoreDisp.extraIo.reqAddr
   } elsewhen (moles.extraIo.inArea) {
     memAddr := moles.extraIo.memAddr
   } otherwise {
@@ -54,6 +59,10 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
   // Game Controller
   gameController.io.start    := io.start
   gameController.io.updateEn := updateEn
+
+  // Score Board
+  scoreBoard.io.round := gameController.io.round
+  scoreBoard.io.hit   := moles.extraIo.hit
 
   // Moles
   moles.io.startHPos            := 0
@@ -70,13 +79,20 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
   roundDisp.io.startHPos    := 510
   roundDisp.io.startVPos    := 150
 
-  braodcastVHPos(moles, roundDisp)
+  // Score Display
+  scoreDisp.extraIo.score   := scoreBoard.io.score
+  scoreDisp.extraIo.reqData := io.memData
+  scoreDisp.io.startHPos    := 530
+  scoreDisp.io.startVPos    := 300
+
+  braodcastVHPos(moles, roundDisp, scoreDisp)
 
   // Layer
   layer.io.hPos              := vgaDriver.io.hPos.resized
   layer.io.vPos              := vgaDriver.io.vPos.resized
   layer.io.molesGraphicsInfo := moles.io.info
   layer.io.roundGraphicsInfo := roundDisp.io.info
+  layer.io.scoreGraphicsInfo := scoreDisp.io.info
 
   when(vgaDriver.io.inDispArea) {
     io.rgb := layer.io.rgb

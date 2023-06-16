@@ -9,7 +9,7 @@ import whackamole.GameConfig
 case class RoundDisp(config: GameConfig = GameConfig())
     extends Drawable(config.graphicsConfig) {
   def hSize: Int = 64
-  def vSize: Int = 64
+  def vSize: Int = 120
 
   val extraIo = new Bundle {
     val round   = in UInt (4 bits)

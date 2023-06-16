@@ -13,6 +13,7 @@ case class Layer(config: GameConfig = GameConfig()) extends Component {
     val vPos              = in UInt (c.heightBits bits)
     val molesGraphicsInfo = in(GraphicsInfo())
     val roundGraphicsInfo = in(GraphicsInfo())
+    val scoreGraphicsInfo = in(GraphicsInfo())
 
     val rgb = out Vec (UInt(8 bits), 3)
   }
@@ -45,7 +46,8 @@ case class Layer(config: GameConfig = GameConfig()) extends Component {
       gameAreaBackground,
       scoreAreaBackground,
       io.molesGraphicsInfo,
-      io.roundGraphicsInfo
+      io.roundGraphicsInfo,
+      io.scoreGraphicsInfo
     )
   )
 

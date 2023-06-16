@@ -10,13 +10,30 @@ import whackamole.GameConstants._
 case class Mole(config: GameConfig = GameConfig())
     extends Drawable(config.graphicsConfig) {
 
-  val extraIo    = new Bundle {
+  val extraIo = new Bundle {
     val press   = in Bool ()
     val appear  = in Bool ()
     val memAddr = out UInt (18 bits)
     val memData = in UInt (16 bits)
     val inArea  = out Bool ()
+    val hit     = out Bool ()
   }
+
+  // The following register is used to indicate whether
+  // the mole has been hit before.
+  // It will be reset to False when the appear signal is asserted.
+  val prevHit = RegInit(False)
+  when(extraIo.appear.rise()) {
+    prevHit := False
+  }
+
+  when(!prevHit && extraIo.appear && extraIo.press) {
+    extraIo.hit := True
+    prevHit     := True
+  } otherwise {
+    extraIo.hit := False
+  }
+
   def hSize: Int =
     (config.gameAreaWidth - 2 * config.gameAreaBorderThickness) / 4 - 2 * config.moleHalfGap
   def vSize: Int = hSize
@@ -26,7 +43,7 @@ case class Mole(config: GameConfig = GameConfig())
     result(0) := extraIo.memData(4 downto 0) @@ U"b000"
     result(1) := extraIo.memData(9 downto 5) @@ U"b000"
     result(2) := extraIo.memData(14 downto 10) @@ U"b000"
-    when (extraIo.press) {
+    when(extraIo.press) {
       result(0) := 0
     }
     result
@@ -66,6 +83,7 @@ case class Moles(config: GameConfig = GameConfig())
     val memData         = in UInt (16 bits)
     val curPosAppear    = out Bool ()
     val inArea          = out Bool ()
+    val hit             = out Bool ()
   }
 
   val moles = Seq.fill(16)(Mole())
@@ -107,6 +125,8 @@ case class Moles(config: GameConfig = GameConfig())
   } otherwise {
     moles.foreach(_.extraIo.press := False)
   }
+
+  extraIo.hit := moles.map(_.extraIo.hit).orR
 
   def hSize: Int = config.gameAreaWidth - 2 * config.gameAreaBorderThickness
   def vSize: Int =
