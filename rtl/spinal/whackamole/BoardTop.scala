@@ -10,23 +10,46 @@ package whackamole
 import spinal.core._
 import spinal.lib._
 
+import whackamole.blackbox._
+
 case class BoardTop(config: GameConfig = GameConfig()) extends Component {
   val io = new Bundle {
-    val rgb      = Vec(out UInt (8 bits), 3)
-    val hSync    = out Bool ()
-    val vSync    = out Bool ()
-    val keyInput = in Bits (4 bits)
+    val clkx5       = in Bool ()
+    val r_pin       = in Bits (4 bits)
+    val start       = in Bool ()
+    val tmds_clk_p  = out Bool ()
+    val tmds_clk_n  = out Bool ()
+    val tmds_data_p = out Bits (4 bits)
+    val tmds_data_n = out Bits (4 bits)
+
+    val memAddr = out UInt (18 bits)
+    val memData = in UInt (16 bits)
   }
+
+  noIoPrefix()
 
   val game = GameTop()
 
-  val keypadDriver = drivers.KeypadDriver()
-  keypadDriver.io.keyInput := io.keyInput
+  val testKey           = test_key()
+  val dviTransmitterTop = dvi_transmitter_top()
 
-  io.hSync         := game.io.hSync
-  io.vSync         := game.io.vSync
-  io.rgb           := game.io.rgb
-  game.io.keyPress := keypadDriver.io.pressed
-  game.io.keyIndex := keypadDriver.io.keyIndex
-  game.io.memData  := 0
+  game.io.start    := io.start
+  io.memAddr       := game.io.memAddr
+  game.io.memData  := io.memData
+  game.io.keyIndex := testKey.io.key_out.asUInt
+  game.io.keyPress := testKey.io.o_key_out_en
+
+  testKey.io.r_pin := io.r_pin
+
+  dviTransmitterTop.io.pclk_x5     := io.clkx5
+  // dviTransmitterTop.io.pclk        := this.clockDomain.clock
+  dviTransmitterTop.io.video_de    := game.io.dispEn
+  dviTransmitterTop.io.video_din   := game.io.rgb.asBits
+  dviTransmitterTop.io.video_hsync := game.io.hSync
+  dviTransmitterTop.io.video_vsync := game.io.vSync
+
+  io.tmds_clk_n  := dviTransmitterTop.io.tmds_clk_n
+  io.tmds_clk_p  := dviTransmitterTop.io.tmds_clk_p
+  io.tmds_data_n := dviTransmitterTop.io.tmds_data_n
+  io.tmds_data_p := dviTransmitterTop.io.tmds_data_p
 }

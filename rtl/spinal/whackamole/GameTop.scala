@@ -18,6 +18,7 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
     val rgb      = Vec(out UInt (8 bits), 3)
     val hSync    = out Bool ()
     val vSync    = out Bool ()
+    val dispEn   = out Bool ()
     val keyPress = in Bool ()
     val keyIndex = in UInt (4 bits)
     val memAddr  = out UInt (18 bits)
@@ -106,4 +107,6 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
   } otherwise {
     io.rgb.foreach(_ := 0)
   }
+
+  io.dispEn := vgaDriver.io.inDispArea
 }
