@@ -58,30 +58,11 @@ case class VgaDriver(config: VgaConfig) extends Component {
     val vPos = out UInt (vCounterBitWidth bits)
   }
 
-  val hCounter = Reg(UInt(hCounterBitWidth bits)) init (0)
-  val vCounter = Reg(UInt(vCounterBitWidth bits)) init (0)
+  val hCounter = Counter(800, True)
+  val vCounter = Counter(525, hCounter.willOverflow)
 
-  val hSync = Reg(Bool) init (False)
-  val vSync = Reg(Bool) init (False)
-
-  when(config.willHOverflow(hCounter)) {
-    vCounter := Mux(config.willVOverflow(vCounter), U(0), vCounter + 1).resized
-    hCounter := U(0)
-  } otherwise {
-    hCounter := hCounter + 1
-  }
-
-  when(config.willStartHSync(hCounter)) {
-    hSync := False
-  } elsewhen (config.willEndHSync(hCounter)) {
-    hSync := True
-  }
-
-  when(config.willStartVSync(vCounter)) {
-    vSync := False
-  } elsewhen (config.willEndVSync(vCounter)) {
-    vSync := True
-  }
+  val hSync = !RegNext((hCounter >= 656) && (hCounter < 752)).init(False)
+  val vSync = !RegNext((vCounter >= 490) && (vCounter < 492)).init(False)
 
   io.hPos := hCounter
   io.vPos := vCounter

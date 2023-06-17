@@ -14,7 +14,7 @@ import whackamole.game.GameController
 object EmitVerilog {
   def main(args: Array[String]) {
     val gameSimConfig   = GameConfig()
-    val gameBoardConfig = GameConfig(frequency = 25.175 MHz)
+    val gameBoardConfig = GameConfig(frequency = 25 MHz)
 
     // Configuration for generating Verilog
     val simConfig = SpinalConfig(
@@ -30,7 +30,7 @@ object EmitVerilog {
         ClockDomainConfig(resetKind = SYNC, resetActiveLevel = LOW),
       targetDirectory = "rtl/verilog",
       defaultClockDomainFrequency = FixedFrequency(gameBoardConfig.frequency),
-      nameWhenByFile = true,
+      nameWhenByFile = true
     )
 
     simConfig.generateVerilog(new GameTop(gameSimConfig))

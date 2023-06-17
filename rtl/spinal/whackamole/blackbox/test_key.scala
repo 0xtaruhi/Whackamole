@@ -15,5 +15,5 @@ case class test_key() extends BlackBox {
   }
 
   noIoPrefix()
-  mapClockDomain(clock = io.clk, reset = io.rst)
+  mapClockDomain(clock = io.clk, reset = io.rst, resetActiveLevel = LOW)
 }

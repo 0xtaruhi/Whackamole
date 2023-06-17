@@ -14,7 +14,7 @@ import whackamole._
 
 import whackamole.GameConstants._
 
-case class Mole(config: GameConfig = GameConfig())
+case class Mole(config: GameConfig)
     extends Drawable(config.graphicsConfig) {
 
   val extraIo = new Bundle {
@@ -78,7 +78,7 @@ case class Mole(config: GameConfig = GameConfig())
   io.info.visible := visible()
 }
 
-case class Moles(config: GameConfig = GameConfig())
+case class Moles(config: GameConfig)
     extends Drawable(config.graphicsConfig) {
 
   val extraIo = new Bundle {
@@ -93,7 +93,7 @@ case class Moles(config: GameConfig = GameConfig())
     val hit             = out Bool ()
   }
 
-  val moles = Seq.fill(16)(Mole())
+  val moles = Seq.fill(16)(Mole(config))
 
   val moleAppearVecs = Vec(Bool(), 16)
   for (i <- 0 until 16) {

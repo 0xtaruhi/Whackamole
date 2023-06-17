@@ -15,9 +15,9 @@ case class dvi_transmitter_top() extends BlackBox {
 
     val tmds_clk_p  = out Bool ()
     val tmds_clk_n  = out Bool ()
-    val tmds_data_p = out Bits (4 bits)
-    val tmds_data_n = out Bits (4 bits)
+    val tmds_data_p = out Bits (3 bits)
+    val tmds_data_n = out Bits (3 bits)
   }
   noIoPrefix()
-  mapClockDomain(clock = io.pclk, reset = io.reset_n)
+  mapClockDomain(clock = io.pclk, reset = io.reset_n, resetActiveLevel = LOW)
 }

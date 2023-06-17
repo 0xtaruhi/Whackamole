@@ -12,7 +12,7 @@ import spinal.lib._
 import whackamole.graphics._
 import whackamole._
 
-case class GameAreaBackground(config: GameConfig = GameConfig())
+case class GameAreaBackground(config: GameConfig)
     extends Drawable(config.graphicsConfig) {
 
   def hSize: Int = config.gameAreaWidth

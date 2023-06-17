@@ -13,7 +13,7 @@ import spinal.lib.fsm._
 import whackamole._
 import whackamole.utils.LSFR
 
-case class GameController(config: GameConfig = GameConfig()) extends Component {
+case class GameController(config: GameConfig) extends Component {
   val io = new Bundle {
     val start      = in Bool ()
     val updateEn   = in Bool ()

@@ -13,7 +13,7 @@ import whackamole.game.GameController
 import whackamole.graphics.Drawable
 import whackamole.game.ScoreBoard
 
-case class GameTop(config: GameConfig = GameConfig()) extends Component {
+case class GameTop(config: GameConfig) extends Component {
   val io = new Bundle {
     val rgb      = Vec(out UInt (8 bits), 3)
     val hSync    = out Bool ()
@@ -38,7 +38,7 @@ case class GameTop(config: GameConfig = GameConfig()) extends Component {
   val moles          = game.components.Moles(config)
   val roundDisp      = game.components.RoundDisp(config)
   val scoreDisp      = game.components.ScoreDisp(config)
-  val layer          = Layer()
+  val layer          = Layer(config)
 
   def braodcastVHPos(x: Drawable*) {
     for (drawable <- x) {

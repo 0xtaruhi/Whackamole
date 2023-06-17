@@ -13,7 +13,7 @@ import spinal.lib._
 import whackamole.graphics._
 import whackamole.GameConfig
 
-case class ScoreDisp(config: GameConfig = GameConfig())
+case class ScoreDisp(config: GameConfig)
     extends Drawable(config.graphicsConfig) {
   def hSize: Int = 80
   def vSize: Int = 64

@@ -13,7 +13,7 @@ import spinal.lib._
 import whackamole.graphics._
 import whackamole.GameConfig
 
-case class RoundDisp(config: GameConfig = GameConfig())
+case class RoundDisp(config: GameConfig)
     extends Drawable(config.graphicsConfig) {
   def hSize: Int = 64
   def vSize: Int = 120

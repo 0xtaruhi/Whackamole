@@ -12,15 +12,16 @@ import spinal.lib._
 
 import whackamole.blackbox._
 
-case class BoardTop(config: GameConfig = GameConfig()) extends Component {
+case class BoardTop(config: GameConfig) extends Component {
   val io = new Bundle {
     val clkx5       = in Bool ()
     val r_pin       = in Bits (4 bits)
+    val c_pin       = out Bits (4 bits)
     val start       = in Bool ()
     val tmds_clk_p  = out Bool ()
     val tmds_clk_n  = out Bool ()
-    val tmds_data_p = out Bits (4 bits)
-    val tmds_data_n = out Bits (4 bits)
+    val tmds_data_p = out Bits (3 bits)
+    val tmds_data_n = out Bits (3 bits)
 
     val memAddr = out UInt (18 bits)
     val memData = in UInt (16 bits)
@@ -28,7 +29,7 @@ case class BoardTop(config: GameConfig = GameConfig()) extends Component {
 
   noIoPrefix()
 
-  val game = GameTop()
+  val game = GameTop(config)
 
   val testKey           = test_key()
   val dviTransmitterTop = dvi_transmitter_top()
@@ -38,13 +39,15 @@ case class BoardTop(config: GameConfig = GameConfig()) extends Component {
   game.io.memData  := io.memData
   game.io.keyIndex := testKey.io.key_out.asUInt
   game.io.keyPress := testKey.io.o_key_out_en
+  // game.io.keyPress := True
 
   testKey.io.r_pin := io.r_pin
+  io.c_pin         := testKey.io.c_pin
 
-  dviTransmitterTop.io.pclk_x5     := io.clkx5
-  // dviTransmitterTop.io.pclk        := this.clockDomain.clock
-  dviTransmitterTop.io.video_de    := game.io.dispEn
-  dviTransmitterTop.io.video_din   := game.io.rgb.asBits
+  dviTransmitterTop.io.pclk_x5   := io.clkx5
+  dviTransmitterTop.io.video_de  := game.io.dispEn
+  dviTransmitterTop.io.video_din := game.io.rgb(0) ## game.io.rgb(1) ## game.io
+    .rgb(2)
   dviTransmitterTop.io.video_hsync := game.io.hSync
   dviTransmitterTop.io.video_vsync := game.io.vSync
 

@@ -12,7 +12,7 @@ import spinal.lib._
 
 import whackamole.GameConfig
 
-case class ScoreBoard(config: GameConfig = GameConfig()) extends Component {
+case class ScoreBoard(config: GameConfig) extends Component {
   val io = new Bundle {
     val round = in UInt (log2Up(config.rounds.size) bits)
     val hit   = in Bool ()
