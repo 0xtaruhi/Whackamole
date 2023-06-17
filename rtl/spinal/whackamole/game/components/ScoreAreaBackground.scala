@@ -18,6 +18,10 @@ case class ScoreAreaBackground(config: GameConfig)
   def hSize: Int = config.graphicsConfig.width - config.gameAreaWidth
   def vSize: Int = config.graphicsConfig.height
 
+  val extraIo = new Bundle {
+    val gameover = in Bool ()
+  }
+
   def draw(): Vec[UInt] = {
     val borderThickness = config.scoreAreaBorderThickness
 
@@ -30,15 +34,27 @@ case class ScoreAreaBackground(config: GameConfig)
 
     val gradient = (vPos |>> 3).resize(8 bits)
 
+    val baseNormalContentColor = Vec(Seq(160, 216, 239).map(x => U(x, 8 bits)))
+    val baseGameOverContentColor = Vec(
+      Seq(242, 160, 161).map(x => U(x, 8 bits))
+    )
+
+    val normalBorderColor   = Vec(Seq(0, 123, 187).map(x => U(x, 8 bits)))
+    val gameOverBorderColor = Vec(Seq(230, 0, 51).map(x => U(x, 8 bits)))
+
     when(inBorder()) {
-      result(0) := 160 - gradient
-      result(1) := 216 - gradient
-      result(2) := 239 - gradient
+      val baseContentColor =
+        Mux(extraIo.gameover, baseGameOverContentColor, baseNormalContentColor)
+      result.zip(baseContentColor).foreach { case (r, c) =>
+        r := c - gradient
+      }
     } otherwise {
       // Border color
-      result(0) := 0
-      result(1) := 123
-      result(2) := 187
+      val borderColor =
+        Mux(extraIo.gameover, gameOverBorderColor, normalBorderColor)
+      result.zip(borderColor).foreach { case (r, c) =>
+        r := c
+      }
     }
     result
   }

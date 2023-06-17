@@ -20,6 +20,7 @@ case class GameController(config: GameConfig) extends Component {
     val gameover   = out Bool ()
     val round      = out UInt (log2Up(config.rounds.size) bits)
     val moleAppear = out Bool ()
+    val moleHit    = in Bool ()
     val moleIndex  = out UInt (4 bits)
   }
 
@@ -49,7 +50,7 @@ case class GameController(config: GameConfig) extends Component {
       val configureInfoState: State = new State with EntryPoint {
         whenIsActive {
           curChildRoundNum := 0
-          switch(roundNum) {
+          switch(roundNum - 1) {
             for (i <- 0 until config.rounds.size) {
               is(U(i)) {
                 maxChildRoundNum      := config.rounds(i).molesNum
@@ -115,7 +116,7 @@ case class GameController(config: GameConfig) extends Component {
             counter := counter + 1
           }
 
-          when(io.updateEn && counter === appearCycles - 1) {
+          when((io.updateEn && counter === appearCycles - 1) || io.moleHit) {
             when(curChildRoundNum === maxChildRoundNum - 1) {
               exit()
             } otherwise {

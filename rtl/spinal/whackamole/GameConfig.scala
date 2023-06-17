@@ -30,9 +30,9 @@ case class GameConfig(
     val gameAreaBorderThickness: Int = 10,
     val scoreAreaBorderThickness: Int = 10,
     val rounds: Seq[RoundInfo] = Seq(
-      RoundInfo(5, 1, 5 sec, 1 sec),
-      RoundInfo(5, 3, 5 sec, 1 sec),
-      RoundInfo(10, 7, 5 sec, 1 sec)
+      RoundInfo(3, 1, 4 sec, 1 sec),
+      RoundInfo(5, 3, 2.5 sec, 1 sec),
+      RoundInfo(7, 5, 1 sec, 1 sec)
     ),
     val roundGapTime: TimeNumber = 3 sec,
     val scoreDigits: Int = 2

@@ -50,9 +50,9 @@ case class Mole(config: GameConfig)
     result(0) := extraIo.memData(4 downto 0) @@ U"b000"
     result(1) := extraIo.memData(9 downto 5) @@ U"b000"
     result(2) := extraIo.memData(14 downto 10) @@ U"b000"
-    when(extraIo.press) {
-      result(0) := 0
-    }
+    // when(extraIo.press) {
+    //   result(0) := 0
+    // }
     result
   }
 

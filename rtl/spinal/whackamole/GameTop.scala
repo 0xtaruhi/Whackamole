@@ -67,6 +67,7 @@ case class GameTop(config: GameConfig) extends Component {
   // Game Controller
   gameController.io.start    := io.start
   gameController.io.updateEn := updateEn
+  gameController.io.moleHit  := moles.extraIo.hit
 
   // Score Board
   scoreBoard.io.round := gameController.io.round
@@ -90,7 +91,7 @@ case class GameTop(config: GameConfig) extends Component {
   // Score Display
   scoreDisp.extraIo.score   := scoreBoard.io.score
   scoreDisp.extraIo.reqData := io.memData
-  scoreDisp.io.startHPos    := 530
+  scoreDisp.io.startHPos    := 525
   scoreDisp.io.startVPos    := 300
 
   braodcastVHPos(moles, roundDisp, scoreDisp)
@@ -101,6 +102,7 @@ case class GameTop(config: GameConfig) extends Component {
   layer.io.molesGraphicsInfo := moles.io.info
   layer.io.roundGraphicsInfo := roundDisp.io.info
   layer.io.scoreGraphicsInfo := scoreDisp.io.info
+  layer.io.gameover          := gameController.io.gameover
 
   when(vgaDriver.io.inDispArea) {
     io.rgb := layer.io.rgb

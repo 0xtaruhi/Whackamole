@@ -22,6 +22,8 @@ case class Layer(config: GameConfig = GameConfig()) extends Component {
     val roundGraphicsInfo = in(GraphicsInfo())
     val scoreGraphicsInfo = in(GraphicsInfo())
 
+    val gameover = in Bool ()
+
     val rgb = out Vec (UInt(8 bits), 3)
   }
 
@@ -44,8 +46,9 @@ case class Layer(config: GameConfig = GameConfig()) extends Component {
   gameAreaBackground.io.startVPos := 0
 
   val scoreAreaBackground = ScoreAreaBackground(config)
-  scoreAreaBackground.io.startHPos := config.gameAreaWidth
-  scoreAreaBackground.io.startVPos := 0
+  scoreAreaBackground.io.startHPos     := config.gameAreaWidth
+  scoreAreaBackground.io.startVPos     := 0
+  scoreAreaBackground.extraIo.gameover := io.gameover
 
   // Register components, so that they can be drawn.
   registerComponents(
