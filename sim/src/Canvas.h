@@ -1,3 +1,10 @@
+/*
+ * File: Canvas.h
+ * Author: 0xtaruhi (zhang_zhengyi@outlook.com)
+ * File Created: Monday, 12th June 2023 4:43:05 pm
+ * Last Modified: Saturday, 17th June 2023 10:48:34 am
+ * Copyright: 2023 - 2023 Fudan University
+ */
 #ifndef CANVAS_H
 #define CANVAS_H
 

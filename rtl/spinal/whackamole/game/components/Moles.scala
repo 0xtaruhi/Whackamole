@@ -1,3 +1,10 @@
+/*
+ * File: Moles.scala
+ * Author: 0xtaruhi (zhang_zhengyi@outlook.com)
+ * File Created: Friday, 16th June 2023 7:04:08 pm
+ * Last Modified: Saturday, 17th June 2023 10:44:52 am
+ * Copyright: 2023 - 2023 Fudan University
+ */
 package whackamole.game.components
 
 import spinal.core._

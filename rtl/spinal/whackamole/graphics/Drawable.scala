@@ -1,3 +1,10 @@
+/*
+ * File: Drawable.scala
+ * Author: 0xtaruhi (zhang_zhengyi@outlook.com)
+ * File Created: Thursday, 15th June 2023 6:56:52 pm
+ * Last Modified: Saturday, 17th June 2023 10:47:02 am
+ * Copyright: 2023 - 2023 Fudan University
+ */
 package whackamole.graphics
 
 import spinal.core._

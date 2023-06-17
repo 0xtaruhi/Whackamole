@@ -1,3 +1,10 @@
+/*
+ * File: MainWindow.cc
+ * Author: 0xtaruhi (zhang_zhengyi@outlook.com)
+ * File Created: Friday, 16th June 2023 7:04:08 pm
+ * Last Modified: Saturday, 17th June 2023 10:49:37 am
+ * Copyright: 2023 - 2023 Fudan University
+ */
 #include <QGraphicsEffect>
 #include <QLayout>
 #include <qgraphicseffect.h>

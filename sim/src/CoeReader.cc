@@ -1,3 +1,10 @@
+/*
+ * File: CoeReader.cc
+ * Author: 0xtaruhi (zhang_zhengyi@outlook.com)
+ * File Created: Thursday, 15th June 2023 6:56:52 pm
+ * Last Modified: Saturday, 17th June 2023 10:48:39 am
+ * Copyright: 2023 - 2023 Fudan University
+ */
 #include <QFile>
 #include <QStringView>
 

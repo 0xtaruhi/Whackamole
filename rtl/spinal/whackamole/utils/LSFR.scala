@@ -1,3 +1,10 @@
+/*
+ * File: LSFR.scala
+ * Author: 0xtaruhi (zhang_zhengyi@outlook.com)
+ * File Created: Wednesday, 14th June 2023 9:53:59 pm
+ * Last Modified: Saturday, 17th June 2023 10:47:20 am
+ * Copyright: 2023 - 2023 Fudan University
+ */
 package whackamole.utils
 
 import spinal.core._

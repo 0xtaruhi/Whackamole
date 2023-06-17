@@ -1,3 +1,10 @@
+/*
+ * File: Canvas.cc
+ * Author: 0xtaruhi (zhang_zhengyi@outlook.com)
+ * File Created: Tuesday, 13th June 2023 6:51:13 pm
+ * Last Modified: Saturday, 17th June 2023 10:48:30 am
+ * Copyright: 2023 - 2023 Fudan University
+ */
 #include "Canvas.h"
 
 #include <QGraphicsPixmapItem>

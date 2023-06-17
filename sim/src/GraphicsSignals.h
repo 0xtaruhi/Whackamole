@@ -1,3 +1,10 @@
+/*
+ * File: GraphicsSignals.h
+ * Author: 0xtaruhi (zhang_zhengyi@outlook.com)
+ * File Created: Monday, 12th June 2023 3:26:58 pm
+ * Last Modified: Saturday, 17th June 2023 10:49:06 am
+ * Copyright: 2023 - 2023 Fudan University
+ */
 #pragma once
 #ifndef GRAPHICS_SIGNALS_H
 #define GRAPHICS_SIGNALS_H
