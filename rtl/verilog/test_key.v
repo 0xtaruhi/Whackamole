@@ -208,40 +208,40 @@ assign r_pin_key = {r_pin_3key,r_pin_2key,r_pin_1key,r_pin_0key};
         CHECK_R1:begin
           c_pin <= 4'b1000;
           case(r_pin_key)
-            4'b1000:key_out <= 4'd10;  //a
-            4'b0100:key_out <= 4'd3;
-            4'b0010:key_out <= 4'd2;
-            4'b0001:key_out <= 4'd1;
+            4'b1000:key_out <= 4'd15;
+            4'b0100:key_out <= 4'd14;
+            4'b0010:key_out <= 4'd13;
+            4'b0001:key_out <= 4'd12;
             default:;
           endcase
         end
         CHECK_R2:begin
           c_pin <= 4'b0100;
           case(r_pin_key)
-            4'b1000:key_out <= 4'd13;  //d
-            4'b0100:key_out <= 4'd14;  //e <--> #
-            4'b0010:key_out <= 4'd0;
-            4'b0001:key_out <= 4'd15;  //f <--> *
+            4'b1000:key_out <= 4'd11;
+            4'b0100:key_out <= 4'd10;
+            4'b0010:key_out <= 4'd9;
+            4'b0001:key_out <= 4'd8;
             default:;
           endcase
         end
         CHECK_R3:begin
           c_pin <= 4'b0010;
           case(r_pin_key)
-            4'b1000:key_out <= 4'd12;  //c
-            4'b0100:key_out <= 4'd9;
-            4'b0010:key_out <= 4'd8;
-            4'b0001:key_out <= 4'd7;
+            4'b1000:key_out <= 4'd7;
+            4'b0100:key_out <= 4'd6;
+            4'b0010:key_out <= 4'd5;
+            4'b0001:key_out <= 4'd4;
             default:;
           endcase
         end
         CHECK_R4:begin
           c_pin <= 4'b0001;
           case(r_pin_key)
-            4'b1000:key_out <= 4'd11;  //b
-            4'b0100:key_out <= 4'd6;
-            4'b0010:key_out <= 4'd5;
-            4'b0001:key_out <= 4'd4;
+            4'b1000:key_out <= 4'd3;
+            4'b0100:key_out <= 4'd2;
+            4'b0010:key_out <= 4'd1;
+            4'b0001:key_out <= 4'd0;
             default:;
           endcase
         end 
