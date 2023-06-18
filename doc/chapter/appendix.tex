@@ -2,14 +2,128 @@
 
 \section{主要文件列表}
 
-\begin{table}
-\caption{主要文件列表}
+\subsection{硬件部分主要文件}
+
+该部分的代码均位于 \texttt{rtl} 目录下. 其中 scala 文件位于 \texttt{rtl/spinal/whackamole} 目录下,
+verilog 文件位于 \texttt{rtl/verilog} 目录下. 以下的文件路径均默认相对于前述的目录. 
+
+\begin{table}[htbp]
+\caption{SpinalHDL 文件列表[\texttt{rtl/spinal/whackamole}]}
 \centering
 \begin{tabular}{lll}
     \toprule
     \heiti 文件名 & \heiti 路径 & \heiti 说明 \\
     \midrule
-    \texttt{main.scala} & \texttt{src/main/scala} & 主文件 \\
+    \texttt{BoardTop.scala} & \texttt{/} & 板级主模块 \\
+    \texttt{Constants.scala} & \texttt{/} & 一些常量定义 \\
+    \texttt{EmitVerilog.scala} & \texttt{/} & 生成 Verilog 代码的代码 \\
+    \texttt{GameConfig.scala} & \texttt{/} & 游戏配置 \\
+    \texttt{GameTop.scala} & \texttt{/} & 仿真级主模块 \\
+    \texttt{Layer.scala} & \texttt{/} & 图层模块 \\
+    \texttt{Vga.scala} & \texttt{drivers/} & VGA 驱动模块 \\
+    \texttt{GameController.scala} & \texttt{game/} & 游戏控制器模块 \\
+    \texttt{ScoreBoard.scala} & \texttt{game/} & 得分计数器模块 \\
+    \texttt{gameAreaBackground.scala} & \texttt{game/components/} & 游戏区域背景模块 \\
+    \texttt{Moles.scala} & \texttt{game/components/} & 地鼠模块 \\
+    \texttt{RoundDisp.scala} & \texttt{game/components/} & 轮次显示模块 \\
+    \texttt{scoreAreaBackground.scala}& \texttt{game/components/} & 分数区域背景模块 \\
+    \texttt{ScoreDisp.scala} & \texttt{game/components/} & 分数显示模块 \\
+    \texttt{Drawable.scala} & \texttt{graphics/} & 可绘制对象抽象类定义 \\
+    \texttt{GraphicsConfig.scala} & \texttt{graphics/} & 图形配置 \\
+    \texttt{Number.scala} & \texttt{graphics/} & 数字显示模块 \\
+    \texttt{LSFR.scala} & \texttt{utils/} & 线性反馈移位寄存器 \\
     \bottomrule
 \end{tabular}
+\label{tab:spinal}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Verilog 文件列表[\texttt{rtl/verilog}]}
+\centering
+\begin{tabular}{lll}
+    \toprule
+    \heiti 文件名 & \heiti 路径 & \heiti 说明 \\
+    \midrule
+    \texttt{ayn\_rst\_syn.v} & \texttt{/} & 异步复位同步释放模块 \\
+    \texttt{dvi\_encoder.v} & \texttt{/} & DVI 编码器 \\
+    \texttt{dvi\_transmitter\_top.v} & \texttt{/} & DVI 发送器 \\
+    \texttt{serializer\_10\_to\_1.v} & \texttt{/} & 10:1 串行器 \\
+    \texttt{test\_key.v} & \texttt{/} & 4x4 键盘驱动 \\
+    \bottomrule
+\end{tabular}
+\label{tab:verilog}
+\end{table}
+
+\subsection{仿真部分主要文件}
+
+表 \ref{tab:sim} 中文件路径均相对于 \texttt{sim} 目录.
+
+\begin{table}[htbp]
+\caption{仿真文件列表}
+\centering
+\begin{tabular}{lll}
+    \toprule
+    \heiti 文件名 & \heiti 路径 & \heiti 说明 \\
+    \midrule
+    \texttt{CMakeLists.txt} & \texttt{/} & CMake 配置文件 \\
+    \texttt{Canvas.cc} & \texttt{src/} & 画布类实现 \\
+    \texttt{Canvas.h} & \texttt{src/} & 画布类定义 \\
+    \texttt{CoeReader.cc} & \texttt{src/} & COE 文件读取类实现 \\
+    \texttt{CoeReader.h} & \texttt{src/} & COE 文件读取类定义 \\
+    \texttt{Common.h} & \texttt{src/} & 一些通用定义和函数 \\
+    \texttt{config.h.in} & \texttt{src/} & 配置文件模板 \\
+    \texttt{GraphicsSignals.h} & \texttt{src/} & 图形信号定义 \\
+    \texttt{HWDut.cc} & \texttt{src/} & 硬件仿真类实现 \\
+    \texttt{HWDut.h} & \texttt{src/} & 硬件仿真类定义 \\
+    \texttt{Keypad.cc} & \texttt{src/} & 键盘类实现 \\
+    \texttt{Keypad.h} & \texttt{src/} & 键盘类定义 \\
+    \texttt{main.cc} & \texttt{src/} & 主函数 \\
+    \texttt{MainWindow.cc} & \texttt{src/} & 主窗口类实现 \\
+    \texttt{MainWindow.h} & \texttt{src/} & 主窗口类定义 \\
+    \texttt{Memory.cc} & \texttt{src/} & BRAM 类实现 \\
+    \texttt{Memory.h} & \texttt{src/} & BRAM 类定义 \\
+    \bottomrule
+\end{tabular}
+\label{tab:sim}
+\end{table}
+
+\subsection{工具部分主要文件}
+
+
+表 \ref{tab:utils} 中文件路径均相对于 \texttt{utils} 目录.
+
+\begin{table}[htbp]
+\caption{工具文件列表}
+\centering
+\begin{tabular}{lll}
+    \toprule
+    \heiti 文件名 & \heiti 路径 & \heiti 说明 \\
+    \midrule
+    \texttt{main.rs} & \texttt{/} & 主函数 \\
+    \texttt{coe.rs} & \texttt{/coe} & COE 文件导出模块 \\
+    \texttt{mod.rs} & \texttt{/coe} & 导出 coe Module \\
+    \bottomrule
+\end{tabular}
+\label{tab:utils}
+\end{table}
+
+\subsection{资源部分主要文件}
+
+如表 \ref{tab:res} 所示, 资源文件均位于 \texttt{res} 目录.
+
+\begin{table}[htbp]
+\caption{资源文件列表}
+\centering
+\begin{tabular}{lll}
+    \toprule
+    \heiti 文件名 & \heiti 路径 & \heiti 说明 \\
+    \midrule
+    \texttt{mole-hide.coe} & \texttt{coe} & 地鼠隐藏图像 coe 文件 \\
+    \texttt{mole-show.coe} & \texttt{coe} & 地鼠显示图像 coe 文件 \\
+    \texttt{numbers.coe} & \texttt{coe} & 数字字模 coe 文件 \\
+    \texttt{mole-hide.png} & \texttt{img} & 地鼠隐藏图像 png 文件 \\
+    \texttt{mole-show.png} & \texttt{img} & 地鼠显示图像 png 文件 \\
+    \bottomrule
+\end{tabular}
+\label{tab:res}
 \end{table}
